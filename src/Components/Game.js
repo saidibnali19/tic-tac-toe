@@ -12,6 +12,14 @@ export default function Game() {
     let description;
     if (move > 0) description = "Go to move #" + move;
     else description = "Go to game start";
+    if (move > 0 && move === currentMove) {
+        description = "You are at move #" + move
+        return (
+          <li key={move}>
+            <p onClick={() => jumpTo(move)}>{description}</p>
+          </li>
+        );
+    }
     return (
       <li key={move}>
         <button onClick={() => jumpTo(move)}>{description}</button>
