@@ -1,4 +1,5 @@
 import React from "react";
+import { v4 as uuidv4 } from 'uuid';
 import Square from "./Square";
 
 function calculateWinner(squares) {
@@ -28,6 +29,16 @@ export default function Board({ xIsNext, squares, onPlay }) {
   if (winner) status = "Winner: " + winner;
   else status = "Next player: " + (xIsNext ? "X" : "O");
 
+  let squaresArray = Array(9);
+
+  for (let i = 0; i < 9; i++) {
+    squaresArray[i] = i;
+  }
+
+  const boardSquares = squaresArray.map((item) => (
+    <Square key={uuidv4()} value={squares[item]} onSquareClick={() => handleClick(item)} />
+  ));
+
   function handleClick(i) {
     if (squares[i] || calculateWinner(squares)) return;
     const nextSquares = squares.slice();
@@ -39,21 +50,7 @@ export default function Board({ xIsNext, squares, onPlay }) {
   return (
     <>
       <div className="status">{status}</div>
-      <div className="board-row">
-        <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
-        <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
-        <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
-      </div>
-      <div className="board-row">
-        <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
-        <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
-        <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
-      </div>
-      <div className="board-row">
-        <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
-        <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
-        <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
-      </div>
+      <div className="board-grid">{boardSquares}</div>
     </>
   );
 }
